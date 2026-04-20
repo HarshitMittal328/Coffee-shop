@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Coffee Shop — POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Grain texture overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ── HEADER ── -->
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-icon">☕</span>
+      <span class="logo-name">My Coffee Shop</span>
+      <span class="logo-tag">Point of Sale</span>
+    </div>
+    <div class="topbar-right">
+      <span class="clock" id="clock"></span>
+      <button class="btn-outline" id="open-add-modal">+ Add Item</button>
+    </div>
+  </header>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <div class="layout">
+
+    <!-- LEFT: Menu Panel -->
+    <main class="panel-left">
+      <section class="menu-section">
+        <div class="section-header">
+          <span class="section-label">Categories</span>
+        </div>
+        <div class="tabs" id="tabs" role="tablist"></div>
+      </section>
+
+      <section class="menu-section">
+        <div class="section-header">
+          <span class="section-label">Menu</span>
+          <span class="item-count" id="item-count"></span>
+        </div>
+        <div class="menu-grid" id="menu-grid" role="list"></div>
+      </section>
+    </main>
+
+    <!-- RIGHT: Order Panel -->
+    <aside class="panel-right">
+      <div class="order-header">
+        <div>
+          <h2 class="order-title">Current Order</h2>
+          <p class="order-sub" id="order-sub">No items yet</p>
+        </div>
+        <button class="btn-ghost-sm" id="clear-cart" title="Clear order">✕ Clear</button>
+      </div>
+
+      <div class="cart-body" id="cart-body" role="list">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">☕</div>
+          <p>Add items from the menu<br>to start an order</p>
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <!-- Summary -->
+        <div class="summary-block">
+          <div class="s-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+          <div class="s-row"><span>GST (5%)</span><span id="tax">₹0</span></div>
+          <div class="s-divider"></div>
+          <div class="s-row s-total"><span>Total</span><span id="total">₹0</span></div>
+        </div>
+
+        <!-- Payment split -->
+        <div class="pay-block">
+          <p class="pay-heading">Payment Split</p>
+          <div class="pay-grid">
+            <div class="pay-field">
+              <label for="cash-input">Cash (₹)</label>
+              <input type="number" id="cash-input" min="0" placeholder="0" disabled />
+            </div>
+            <div class="pay-field">
+              <label for="upi-input">UPI / Card (₹)</label>
+              <input type="number" id="upi-input" min="0" placeholder="0" disabled />
+            </div>
+          </div>
+          <div class="balance-row" id="balance-row" hidden>
+            <span id="balance-label">Remaining</span>
+            <span id="balance-val">₹0</span>
+          </div>
+        </div>
+
+        <button class="btn-pay" id="pay-btn" disabled>Mark as Paid</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ── ADD ITEM MODAL ── -->
+  <div class="modal-overlay" id="add-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-box">
+      <h3 class="modal-title" id="modal-title">Add New Item</h3>
+      <div class="field-group">
+        <label for="new-name">Item Name</label>
+        <input type="text" id="new-name" placeholder="e.g. Vanilla Latte" autocomplete="off" />
+      </div>
+      <div class="field-group">
+        <label for="new-price">Price (₹)</label>
+        <input type="number" id="new-price" min="1" placeholder="e.g. 130" />
+      </div>
+      <div class="field-group">
+        <label for="new-cat">Category</label>
+        <select id="new-cat">
+          <option value="Coffee">Coffee</option>
+          <option value="Tea">Tea</option>
+          <option value="Cold">Cold</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="close-add-modal">Cancel</button>
+        <button class="btn-save" id="save-item">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RECEIPT MODAL ── -->
+  <div class="modal-overlay" id="receipt-modal" role="dialog" aria-modal="true" aria-label="Payment receipt" hidden>
+    <div class="receipt-box" id="receipt-content"></div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
